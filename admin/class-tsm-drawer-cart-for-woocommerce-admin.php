@@ -107,10 +107,80 @@ class Tsm_Drawer_Cart_For_Woocommerce_Admin {
 			add_action('admin_notices', function () {
 				echo '<div class="notice notice-error">';
 				echo '<p>';
-				_e('Your Plugin requires WooCommerce to be activated in order to run properly. Please activate WooCommerce before using the Plugin.', 'tsm-drawer-cart-for-woocommerce');
+				_e('<strong>TSM Drawer Cart for WooCommerce</strong> requires WooCommerce to be activated in order to run properly. Please activate WooCommerce before using the Plugin.', 'tsm-drawer-cart-for-woocommerce');
 				echo '</p>';
 				echo '</div>';
 			});
 		}
+	}
+
+	/**
+	 * Create settings page for the plugin
+	 */
+	public function add_settings_page() {
+		add_menu_page(
+			__('TSM Drawer Cart for WooCommerce', 'tsm-drawer-cart-for-woocommerce'), // Page title
+			__('TSM Drawer Cart', 'tsm-drawer-cart-for-woocommerce'), // Menu title
+			'manage_options', // Capability
+			'tsm-drawer-cart-for-woocommerce', // Menu slug
+			array($this, 'display_settings_page'), // Callback function
+			'dashicons-cart', // Icon URL (dashicons are built-in icons in WordPress, but you can also use your own icon here)
+			81 // Position (81 will place it below the "Settings" menu item)
+		);
+	}
+
+	/**
+	 * Register the settings for the settings page
+	 */
+	public function init_settings() {
+		// Register a new setting
+		register_setting(
+			'tsm-drawer-cart-for-woocommerce', // Option group
+			'tsm_drawer_cart_options' // Option name
+		);
+
+		// Add a new section
+		add_settings_section(
+			'tsm_drawer_cart_general', // Section ID
+			__('General Settings', 'tsm-drawer-cart-for-woocommerce'), // Section title
+			null, // Optional callback function
+			'tsm-drawer-cart-for-woocommerce' // Page
+		);
+
+		// Add a new field to the section
+		add_settings_field(
+			'tsm_drawer_cart_icon_color', // Field ID
+			__('Icon Color', 'tsm-drawer-cart-for-woocommerce'), // Field title
+			array($this, 'icon_color_field'), // Callback function
+			'tsm-drawer-cart-for-woocommerce', // Page
+			'tsm_drawer_cart_general' // Section ID
+		);
+		// Add a new field to the section
+		add_settings_field(
+			'tsm_drawer_cart_background_color', // Field ID
+			__('Icon Background Color', 'tsm-drawer-cart-for-woocommerce'), // Field title
+			array($this, 'icon_background_color_field'), // Callback function
+			'tsm-drawer-cart-for-woocommerce', // Page
+			'tsm_drawer_cart_general' // Section ID
+		);
+	}
+
+	public function icon_color_field() {
+		$options = get_option('tsm_drawer_cart_options');
+		$icon_color = isset($options['icon_color']) ? $options['icon_color'] : '#fff';
+		echo '<input type="color" name="tsm_drawer_cart_options[icon_color]" value="' . esc_attr($icon_color) . ' ">';
+	}
+
+	public function icon_background_color_field() {
+		$options = get_option('tsm_drawer_cart_options');
+		$background_color = isset($options['background_color']) ? $options['background_color'] : '#f76e6e';
+		echo '<input type="color" name="tsm_drawer_cart_options[background_color]" value="' . esc_attr($background_color) . ' ">';
+	}
+
+	/**
+	 * File to render the settings page
+	 */
+	public function display_settings_page() {
+		include_once 'partials/tsm-drawer-cart-for-woocommerce-admin-display.php';
 	}
 }

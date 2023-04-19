@@ -134,9 +134,7 @@ class Tsm_Drawer_Cart_For_Woocommerce {
 	 * @access   private
 	 */
 	private function set_locale() {
-
 		$plugin_i18n = new Tsm_Drawer_Cart_For_Woocommerce_i18n();
-
 		$this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
 	}
 
@@ -148,12 +146,12 @@ class Tsm_Drawer_Cart_For_Woocommerce {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-
 		$plugin_admin = new Tsm_Drawer_Cart_For_Woocommerce_Admin($this->get_plugin_name(), $this->get_version());
-
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 		$this->loader->add_action('plugins_loaded', $plugin_admin, 'check_woocommerce_active');
+		$this->loader->add_action('admin_menu', $plugin_admin, 'add_settings_page');
+		$this->loader->add_action('admin_init', $plugin_admin, 'init_settings');
 	}
 
 	/**
@@ -164,11 +162,11 @@ class Tsm_Drawer_Cart_For_Woocommerce {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-
 		$plugin_public = new Tsm_Drawer_Cart_For_Woocommerce_Public($this->get_plugin_name(), $this->get_version());
-
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+		$this->loader->add_action('wp_footer', $plugin_public, 'tsm_drawer_cart_display');
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_inline_styles', 20);
 	}
 
 	/**
