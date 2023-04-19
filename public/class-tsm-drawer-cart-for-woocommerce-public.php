@@ -166,6 +166,7 @@ class Tsm_Drawer_Cart_For_Woocommerce_Public {
 								<p><?= WC()->cart->get_product_price($_product); ?></p>
 							</div>
 							<div class="tsm-drawer-cart-product__quantity">
+								<span class="minus tsm-drawer-cart-product__qty-button">-</span>
 								<?php
 								echo woocommerce_quantity_input(array(
 									'input_name'   => "cart[{$cart_item_key}][qty]",
@@ -175,6 +176,7 @@ class Tsm_Drawer_Cart_For_Woocommerce_Public {
 									'product_name' => $_product->get_name(),
 								), $_product, false);
 								?>
+								<span class="plus tsm-drawer-cart-product__qty-button">+</span>
 							</div>
 						</div>
 				<?php

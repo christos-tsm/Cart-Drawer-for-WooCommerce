@@ -22,6 +22,9 @@
     </a>
 
     <div class="tsm-drawer-cart__container">
+        <div class="loader__container">
+            <span class="loader"></span>
+        </div>
         <div class="tsm-drawer-cart__header">
 
         </div>
